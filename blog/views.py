@@ -1,4 +1,4 @@
-from django.shortcuts import render
+
 from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.shortcuts import render, redirect
@@ -6,17 +6,21 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
-from django.http import HttpResponseRedirect
 
 from blog.forms import UserRegisterForm, UserLoginForm 
 
+
+@login_required
 def post_list(request):
     posts = Post.objects.all()
+    print("request.user = ", request.user)
+
     return render(request, 'post_list.html', {'posts': posts})
 
+@login_required
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    print("request.user = ", request.user)
     return render(request, 'post_detail.html', {'post': post})
 
 
