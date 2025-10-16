@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title> Create a new post </title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background-color:#3236b4;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            padding:20px;
+        }
+        .form-container {
+            width:100%;
+            max-width:600px;
+            background:white;
+            border-radius:8px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            padding:40px;
+            text-align:center;
+        }
+        .form-title {
+            color:#333;
+            margin-bottom:30px;
+            font-size:24px;
+            font-weight:600;
+        }
+        .input-group {
+            margin-bottom:20px;
+            text-align:right;
+        }
+        .input-group label {
+            display:block;
+            font-weight:500;
+            margin-bottom:5px;
+        }
+        .input-group input,
+        .input-group textarea {
+            width:100%;
+            padding:12px 15px;
+            border:1px solid #ddd;
+            border-radius:4px;
+            font-size:14px;
+            transition:border-color 0.3s;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color:#666;
+            outline:none;
+        }
+        .form-button {
+            width:100%;
+            padding:12px;
+            background-color:#3236b4;
+            color:white;
+            border:none;
+            border-radius:4px;
+            font-size:16px;
+            cursor:pointer;
+            transition:background-color 0.3s;
+            margin-top:10px;
+        }
+        .form-button:hover {
+            background-color:#555;
+        }
+        .messages {
+            color:red;
+            list-style:none;
+            margin-bottom:15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title"> Create a new post </h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="input-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div class="input-group">
+                {{ form.content.label_tag }}
+                {{ form.content }}
+                {{ form.content.errors }}
+            </div>
+
+            <button type="submit" class="form-button">Send Post</button>
+        </form>
+
+        <div style="margin-top:20px;">
+            <a href="{% url 'post_list' %}" style="color:#06165a; text-decoration:none;">بازگشت به لیست پست‌ها</a>
+        </div>
+    </div>
+</body>
+</html>

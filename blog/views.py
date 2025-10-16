@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from blog.forms import UserRegisterForm, UserLoginForm 
+from blog.forms import UserRegisterForm,UserLoginForm,PostForm 
 
 
 @login_required
@@ -37,7 +37,6 @@ def register_view(request):
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
-    
 
 def login_view(request):
     if request.method == 'POST':
@@ -57,3 +56,24 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')    
+
+@login_required
+def create_post_view(request):
+    if request.method == 'POST':
+        print("request.POST = ", request.POST)
+        print("request.FILES = ", request.FILES)
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, 'Your post was successfully created.')
+            return redirect('post_list')
+    else:
+        form = PostForm()
+    return render(request, 'create_post.html', {'form': form})
+
+
+
+
+
