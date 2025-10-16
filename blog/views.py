@@ -94,6 +94,20 @@ def update_post_view(request, pk):
 
 
 
+def delete_post_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    print("post = ", post)
+    if post.author != request.user:
+        return redirect('post_list')
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('post_list')
+
+    return render(request, 'delete_post.html', {'post': post})    
+
+
+
 
 
 
