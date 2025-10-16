@@ -93,7 +93,7 @@ def update_post_view(request, pk):
     return render(request, 'update_post.html', {'form': form})
 
 
-
+@login_required
 def delete_post_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
     print("post = ", post)
