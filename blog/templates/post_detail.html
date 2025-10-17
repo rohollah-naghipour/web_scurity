@@ -1,14 +1,64 @@
-
-<html>
-<body>    
-<h1> {{post.id}} </h1>
-
-<div class="posts">
-        <h2>{{ post.title }}</h2>
-        <img src="{{ post.content.url }}" alt="">
-        <h2>{{post.created_at}} </h2>
-        <h2>{{post.updated_at}}</h2>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }}</title>
+    <style>
+        body { background:#f2f2f2; font-family:'Segoe UI'; margin:0; padding:20px; }
+        .container { max-width:800px; margin:0 auto; background:white; padding:30px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color:#333; margin-bottom:15px; }
+        img { max-width:100%; border-radius:8px; margin:20px 0; }
+        p.meta { color:#777; font-size:14px; margin-bottom:15px; }
+        .content { margin-bottom:30px; line-height:1.6; color:#444; }
+        .comment-section { margin-top:40px; }
+        .comment { background:#f9f9f9; border-radius:8px; padding:15px; margin-bottom:10px; }
+        .comment-author { font-weight:bold; color:#3236b4; }
+        .comment-time { font-size:12px; color:#777; margin-bottom:5px; }
+        textarea { width:100%; border:1px solid #ddd; border-radius:4px; padding:10px; resize:none; }
+        button { background-color:#3236b4; color:white; padding:10px 15px; border:none; border-radius:4px; cursor:pointer; margin-top:10px; }
+        button:hover { background-color:#555; }
+        a.back-link { display:inline-block; margin-top:20px; color:#06165a; text-decoration:none; }
+    </style>
+</head>
 <body>
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <p class="meta">توسط {{ post.author.username }} در {{ post.created_at|date:"Y-m-d H:i" }}</p>
+
+        {% if post.content %}
+            <img src="{{ post.content.url }}" alt="{{ post.title }}">
+        {% endif %}
+
+        <div class="content">
+            {{ post.content|linebreaks }}
+        </div>
+
+        <hr>
+
+        <div class="comment-section">
+            <h2>نظرات</h2>
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="comment-author">{{ comment.user }}</div>
+                    <div class="comment-time">{{ comment.created_at|date:"Y-m-d H:i" }}</div>
+                    <div class="comment-content">{{ comment.text}}</div>
+                </div>
+            {% empty %}
+                <p>هیچ نظری ثبت نشده است.</p>
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">ارسال نظر</button>
+                </form>
+            {% else %}
+                <p>برای ارسال نظر <a href="{% url 'login' %}">وارد شوید</a>.</p>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'post_list' %}" class="back-link">← بازگشت به لیست پست‌ها</a>
+    </div>
+</body>
 </html>

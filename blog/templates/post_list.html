@@ -1,17 +1,43 @@
 
+<!DOCTYPE html>
 <html>
+<head>
+    <title>لیست پست‌ها</title>
+    <style>
+        body { background:#f2f2f2; font-family:'Segoe UI'; margin:0; padding:20px; }
+        .post { background:rgb(72, 89, 189); border-radius:8px; padding:20px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+        .post img { max-width:100%; border-radius:8px; margin-top:10px; }
+        .actions { margin-top:10px; }
+        a.btn { text-decoration:none; color:white; padding:8px 12px; border-radius:4px; margin-right:5px; }
+        .add-btn { background:#3236b4; }
+        .edit-btn { background:#00897b; }
+        .delete-btn { background:#d32f2f; }
+    </style>
+</head>
 <body>
-    <h1>All Posts</h1>
+    <h1>پست‌های اخیر</h1>
+    <a href="{% url 'create_post' %}" class="btn add-btn">+ ایجاد پست جدید</a>
+    <hr><br>
 
-    <div class="posts">
-        {% for post in posts %}
-            <div class="post">
-                <h2>{{ post.title }}</h2>
-                    <img src="{{ post.content.url }}" alt="{{ post.title }}">
-                <p>{{ post.created_at }}</p>
-                <p>{{ post.updated_at }}</p>
-            </div>
-        {% endfor %}
+    {% for post in posts %}
+    <div class="post">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content|truncatewords:40 }}</p>
+        {% if post.con %}
+             <img src="{{ post.content.url }}" alt="{{ post.title }}">
+        {% endif %}
+        <p>نویسنده: {{ post.author.username }} | تاریخ: {{ post.created_at|date:"Y-m-d H:i" }}</p>
+
+        {% if user == post.author %}
+        <div class="actions">
+            <a href="{% url 'update_post' post.pk %}" class="btn edit-btn">ویرایش</a>
+            <a href="{% url 'delete_post' post.pk %}" class="btn delete-btn">حذف</a>
+        </div>
+        {% endif %}
     </div>
+    {% empty %}
+    <p>هیچ پستی هنوز وجود ندارد.</p>
+    {% endfor %}
 </body>
 </html>
+

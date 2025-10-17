@@ -45,4 +45,18 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content']
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        #widgets = {
+            #'content': forms.Textarea(attrs={
+                #'placeholder': 'Write your comment...',
+                #'rows': 3,
+                #'style': 'width:100%; border:1px solid #ddd; border-radius:4px; padding:10px;'
+            #}),
+        #}
+
         
