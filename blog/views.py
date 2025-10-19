@@ -7,22 +7,42 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from blog.forms import UserRegisterForm,UserLoginForm,PostForm,CommentForm 
+from blog.forms import UserRegisterForm,UserLoginForm,PostForm,CommentForm
 
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import ensure_csrf_cookie
 
+@ensure_csrf_cookie
 @login_required
 def post_list(request):
     posts = Post.objects.all()
     print("request.user = ", request.user)
+    token = get_token(request)
+    print('token = ', token)
+    return render(request, 'post_list.html',{'posts': posts})
 
-    return render(request, 'post_list.html', {'posts': posts})
 
-#@login_required
-#def post_detail(request, pk):
-    #post = get_object_or_404(Post, pk=pk)
-    #print("request.user = ", request.user)
-    #return render(request, 'post_detail.html', {'post': post})
+@login_required
+def post_detail_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = post.comments.all().order_by('-user')
 
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = CommentForm()
+
+    return render(request, 'post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'form': form,
+    })
 
 def register_view(request):
     if request.method == 'POST':
@@ -106,28 +126,6 @@ def delete_post_view(request, pk):
 
     return render(request, 'delete_post.html', {'post': post})    
 
-
-@login_required
-def post_detail_view(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    comments = post.comments.all().order_by('-user')
-
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.user = request.user
-            comment.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = CommentForm()
-
-    return render(request, 'post_detail.html', {
-        'post': post,
-        'comments': comments,
-        'form': form,
-    })
 
 
 
