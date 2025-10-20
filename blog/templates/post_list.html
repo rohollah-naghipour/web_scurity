@@ -10,23 +10,31 @@
     
     <h1>Recent Posts</h1>
 
-    <div class="post-grid">
+   <div class="post-grid">
         {% for post in posts %}
-            <div class="post-card">
-                    {% if post.content %}
-                        <img src="{{ post.content.url }}" alt="{{ post.title }}">
-                    {% endif %}
-                    <div class="post-content">
-                        <h3>{{ post.title }}</h3>
-                        <p class="post-meta">{{ post.created_at|date:"F d, Y" }}</p>
-                        <p style="font-size:14px; color:#3735c9;">{{ post.author.username }}</p>
+        <div class="post-card">
+            <a href="{% url 'post_detail' post.pk %}" class="post-link">
+                {% if post.content %} <img src="{{ post.content.url }}" alt="{{ post.title }}" class="post-image">
+                {% else %}
+                    <div class="no-image">
+                        {{ post.title }}
                     </div>
-                </a>
-            </div>
+                {% endif %}
+                <div class="post-content">
+                    <div class="post-title">{{ post.title }}</div>
+                    <div class="post-meta">{{ post.created_at|date:"F d, Y" }}</div>
+                    <div class="post-author">{{ post.author.username }}</div>
+                </div>
+            </a>
+            <div style="line-height:1.8; color:#253fb0;"> {{ post.text|linebreaks }}
+        </div>
+        </div>
         {% empty %}
-        <p> There are no posts yet. </p>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <p>There are no posts yet.</p>
+        </div>
         {% endfor %}
     </div>
-    <script src="{% static 'js/script.js' %}"></script>
+
 </body>
 </html>

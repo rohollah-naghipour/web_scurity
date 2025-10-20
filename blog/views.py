@@ -8,13 +8,35 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
+from blog.forms import CommentForm
 
 
 def post_list(request):
     posts = Post.objects.all()
     return render(request, 'post_list.html', {'posts': posts})
+ 
 
+def post_detail_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = post.comments.all().order_by('-user')
 
-def test(request):
-    posts = Post.objects.all()
-    return render(request, 'test.html', {'post': posts})
+    #print("post =", post)
+    #print("comments =", comments)
+    #print("request.user =", request.user)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = CommentForm()
+
+    return render(request, 'post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'form': form,
+    })

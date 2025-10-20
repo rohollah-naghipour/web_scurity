@@ -107,6 +107,17 @@ body {
     text-align: left;
 }
 
+.post-image {
+    display: block;
+    width: 100%;
+    max-width: 800px;  /* keeps image from being too large */
+    height: auto;
+    border-radius: 10px;
+    margin: 20px auto;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    object-fit: cover;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     body {

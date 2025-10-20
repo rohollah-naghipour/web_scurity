@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+        <div class="container">
+        <h1>{{ post.title }}</h1>
+        <p class="meta">BY: {{ post.author.username }} </p>
+            <p> {{ post.created_at|date:"Y-m-d H:i" }}</p>
+
+        {% if post.content %}
+            <img src="{{ post.content.url }}" alt="{{ post.title }}">
+        {% endif %}
+
+        <hr>
+
+        <div class="comment-section">
+           <p> <h1>User Comments</h1></p>
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="comment-author">{{ comment.user.username }}</div>
+                    <div class="comment-content">{{ comment.text }}</div>
+                    <div class="comment-time">{{ comment.created_at|date:"Y-m-d H:i" }}</div>
+                    <h2>___________________________________</h2>
+                </div>
+            {% empty %}
+                <p>No comments have been posted.</p>
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.text }}
+                    <button type="submit">Submit comment</button>
+                </form>
+            {% else %}
+            <p>To post a comment, please <a href="{% url 'login' %}">log in</a>.</p>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'post_list' %}" class="back-link">← Return to post list</a>
+    </div>    
+
+</body>
+</html>
