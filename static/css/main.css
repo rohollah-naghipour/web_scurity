@@ -1,0 +1,139 @@
+/* Base Styles & Variables */
+:root {
+    --black: #121212;
+    --dark-gray: #1a1a1a;
+    --medium-gray: #2d2d2d;
+    --light-gray: #404040;
+    --text-light: #e0e0e0;
+    --text-lighter: #ffffff;
+    --text-muted: #888;
+    --accent: #555;
+    --accent-hover: #666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--black);
+    color: var(--text-light);
+    line-height: 1.6;
+    padding: 30px 20px;
+    min-height: 100vh;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Post Grid Layout - Simple 3 columns */
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+/* Post Card Styles - Simple and Clean */
+.post-card {
+    background: var(--dark-gray);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--light-gray);
+    transition: all 0.3s ease;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Category/Tag - Top left */
+.post-category {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Main Title */
+.post-title {
+    color: var(--text-lighter);
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+/* Description/Subtitle */
+.post-description {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* Date */
+.post-date {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--light-gray);
+    padding-top: 12px;
+    margin-top: auto;
+}
+
+/* Text Alignment */
+.persian-text {
+    direction: rtl;
+    text-align: right;
+}
+
+.english-text {
+    direction: ltr;
+    text-align: left;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 15px;
+    }
+    
+    .post-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .post-card {
+        padding: 15px;
+        min-height: 160px;
+    }
+    
+    .post-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    body {
+        padding: 15px 10px;
+    }
+}
