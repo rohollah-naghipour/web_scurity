@@ -91,7 +91,42 @@ def create_post_view(request):
     return render(request, 'create_post.html', {'form': form})
 
 
-
+@login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')    
+    return redirect('login')  
+
+
+
+@login_required
+def update_post_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    print("post = ", post)
+    if post.author != request.user:
+        messages.error(request, 'You do not have permission to edit this post.')
+        return redirect('post_list')
+
+    if request.method == 'POST':
+        form = PostForm(request.POST,request.FILES,instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your post has been successfully edited.')
+            return redirect('post_list')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'update_post.html', {'form': form})
+
+
+
+@login_required
+def delete_post_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    print("post = ", post)
+    if post.author != request.user:
+        return redirect('post_list')
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('post_list')
+
+    return render(request, 'delete_post.html', {'post': post})

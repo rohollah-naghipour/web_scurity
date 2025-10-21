@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Edit</title>
+    <link rel="stylesheet" href="{% static 'css/edit-post.css' %}">
+</head>
+<body>
+    <div class="form-container">
+       <h1>Edit Post</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+           <button type="submit">Save changes</button>
+        </form>
+    </div>
+    <script src="{% static 'js/edit-post.js' %}"></script>
+</body>
+</html>

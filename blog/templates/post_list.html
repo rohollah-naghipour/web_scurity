@@ -27,7 +27,21 @@
                     <div class="post-author">{{ post.author.username }}</div>
                 </div>
             </a>
-            <div style="line-height:1.8; color:#253fb0;">{{ post.text }}</div>
+            
+            {% if user == post.author %}
+            <div class="actions">
+                <a href="{% url 'update_post' post.pk %}" class="edit-btn">
+                    <span>✏️</span>
+                    Edit
+                </a>
+                <a href="{% url 'delete_post' post.pk %}" class="delete-btn">
+                    <span>🗑️</span>
+                    Delete
+                </a>
+            </div>
+            {% endif %}
+            
+            <div class="post-text">{{ post.text }}</div>
         </div>
         {% empty %}
         <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
