@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login to Blog</title>
-    <link rel="stylesheet" href="{% static 'css/dark-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body class="login-body">
     <div class="login-container">
-        <h1 class="login-title">Login to Blog</h1>
+        <h1 class="login-title">Login to the blog</h1>
 
         <form method="post">
             {% csrf_token %}
@@ -32,12 +33,15 @@
                 {{ form.password.errors }}
             </div>
 
-            <button type="submit" class="login-button">ورود</button>
+            <button type="submit" class="login-button">Login</button>
         </form>
 
         <div class="login-links">
-            <a href="{% url 'register' %}">Use security account? Register</a>
+           <a href="{% url 'register' %}">Use security account? Register</a>
         </div>
     </div>
+
+  <script src="{% static 'js/login.js' %}"></script>
+
 </body>
 </html>

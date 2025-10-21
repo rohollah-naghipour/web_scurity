@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body>
-        <div class="container">
+    <div class="container">
+             <div class="container">
         <h1>{{ post.title }}</h1>
         <p class="meta">BY: {{ post.author.username }} </p>
             <p> {{ post.created_at|date:"Y-m-d H:i" }}</p>
@@ -25,7 +26,6 @@
                     <div class="comment-author">{{ comment.user.username }}</div>
                     <div class="comment-content">{{ comment.text }}</div>
                     <div class="comment-time">{{ comment.created_at|date:"Y-m-d H:i" }}</div>
-                    <h2>___________________________________</h2>
                 </div>
             {% empty %}
                 <p>No comments have been posted.</p>
@@ -44,6 +44,8 @@
 
         <a href="{% url 'post_list' %}" class="back-link">← Return to post list</a>
     </div>    
-
+        
+        <script src="{% static 'js/post-detail.js' %}"></script>
+    </div>
 </body>
 </html>

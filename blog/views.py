@@ -8,14 +8,15 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
-from blog.forms import CommentForm,UserLoginForm,UserRegisterForm
+from blog.forms import CommentForm,UserLoginForm,UserRegisterForm,PostForm
 
-
+@login_required
 def post_list(request):
     posts = Post.objects.all()
+    print("request.user =", request.user)
     return render(request, 'post_list.html', {'posts': posts})
  
-
+@login_required
 def post_detail_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = post.comments.all().order_by('-user')
@@ -71,3 +72,26 @@ def register_view(request):
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+
+@login_required
+def create_post_view(request):
+    if request.method == 'POST':
+        print("request.POST = ", request.POST)
+        print("request.FILES = ", request.FILES)
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, 'Your post was successfully created.')
+            return redirect('post_list')
+    else:
+        form = PostForm()
+    return render(request, 'create_post.html', {'form': form})
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')    

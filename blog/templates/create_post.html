@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a new post</title>
+    <link rel="stylesheet" href="{% static 'css/post-form.css' %}">
+</head>
+<body>
+    <div class="form-container">
+       <h1 class="form-title">Create a new post</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="input-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div class="input-group">
+                {{ form.content.label_tag }}
+                {{ form.content }}
+                {{ form.content.errors }}
+            </div>
+
+            <button type="submit" class="form-button">Submit Post</button>
+        </form>
+
+        <div class="back-link">
+            <a href="{% url 'post_list' %}">Return to post list</a> 
+        </div>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
