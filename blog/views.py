@@ -9,6 +9,17 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
 from blog.forms import CommentForm,UserLoginForm,UserRegisterForm,PostForm
+from django.db.models import Count
+
+def homepage(request):
+    context = {
+        'total_posts': Post.objects.count(),
+        'total_users': User.objects.count(),
+        'total_comments': Post.objects.aggregate(total_comments=Count('comments'))['total_comments'] or 0,
+        'recent_posts': Post.objects.all().order_by('-created_at')[:6]
+    }
+    return render(request, 'index.html', context)
+
 
 @login_required
 def post_list(request):

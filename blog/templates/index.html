@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Home - My Blog</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body class="home-page">
+    <!-- Navigation Dots -->
+     <img src="index.jpg" alt="Italian Trulli">
+
+    <div class="nav-dots">
+        <button class="nav-dot active" data-section="hero"></button>
+        <button class="nav-dot" data-section="features"></button>
+        <button class="nav-dot" data-section="posts"></button>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="page-section active">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <div class="logo">
+                <span class="logo-icon">📝</span>
+                <h1 class="logo-text">My Blog</h1>
+            </div>
+            
+            <h2 class="hero-title">Welcome to My Blog</h2>
+            <p class="hero-subtitle">A place to share thoughts, ideas, and experiences</p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ total_posts }}+</span>
+                    <span class="stat-label">Published Posts</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ total_users }}+</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ total_comments }}+</span>
+                    <span class="stat-label">Comments</span>
+                </div>
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="{% url 'login' %}" class="btn btn-primary">
+                    <span class="btn-icon">🚀</span>
+                    Get Started - Login
+                </a>
+                <button class="btn btn-secondary next-section-btn" data-next="features">
+                    <span class="btn-icon">👇</span>
+                    Explore Features
+                </button>
+            </div>
+
+            <div class="scroll-indicator">
+                <span>Scroll or use arrows to navigate</span>
+                <div class="arrow-down">↓</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="page-section">
+        <div class="container">
+            <h2 class="section-title">Blog Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Modern Design</h3>
+                    <p>Beautiful and responsive dark theme user experience</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast & Optimized</h3>
+                    <p>Quick loading and excellent performance on all devices</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>High Security</h3>
+                    <p>Data protection and user privacy guaranteed</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Social Interaction</h3>
+                    <p>Advanced commenting and sharing system</p>
+                </div>
+            </div>
+
+            <div class="section-nav">
+                <button class="btn btn-outline prev-section-btn" data-prev="hero">
+                    <span class="btn-arrow">↑</span>
+                    Back to Top
+                </button>
+                <button class="btn btn-outline next-section-btn" data-next="posts">
+                    View Recent Posts
+                    <span class="btn-arrow">↓</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Posts Section -->
+    <section id="posts" class="page-section">
+        <div class="container">
+            <h2 class="section-title">Recent Posts</h2>
+            <div class="posts-preview">
+                {% for post in recent_posts|slice:":3" %}
+                <div class="preview-card">
+                    {% if post.content %}
+                    <img src="{{ post.content.url }}" alt="{{ post.title }}" class="preview-image">
+                    {% else %}
+                    <div class="preview-image-placeholder">
+                        <span>📄</span>
+                    </div>
+                    {% endif %}
+                    <div class="preview-content">
+                        <h3 class="preview-title">{{ post.title }}</h3>
+                        <p class="preview-excerpt">{{ post.text|truncatewords:20 }}</p>
+                        <div class="preview-meta">
+                            <span class="author">By {{ post.author.username }}</span>
+                            <span class="date">{{ post.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="no-posts">
+                    <p>No posts published yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="section-nav">
+                <button class="btn btn-outline prev-section-btn" data-prev="features">
+                    <span class="btn-arrow">↑</span>
+                    Back to Features
+                </button>
+                <a href="{% url 'post_list' %}" class="btn btn-primary">
+                    View All Posts
+                    <span class="btn-arrow">→</span>
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-secondary">
+                    <span class="btn-icon">🔐</span>
+                    Login to Continue
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/home.js' %}"></script>
+</body>
+</html>
