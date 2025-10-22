@@ -1,129 +1,57 @@
+
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>LIST POSTS </title>
-    <style>
-        body {
-            background: #f4f4f9;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 40px;
-            direction: rtl;
-            text-align: center;
-        }
-
-        h1 {
-            color: #222;
-            margin-bottom: 20px;
-        }
-
-        .add-btn {
-            background: #3236b4;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            display: inline-block;
-            margin-bottom: 30px;
-            font-weight: bold;
-        }
-
-        .post-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            justify-items: center;
-        }
-
-        .post-card {
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            width: 100%;
-            max-width: 350px;
-            text-align: center;
-        }
-
-        .post-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .post-card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
-
-        .post-content {
-            padding: 15px;
-        }
-
-        .post-content h3 {
-            color: #3236b4;
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        .post-meta {
-            color: #666;
-            font-size: 13px;
-        }
-
-        .post-link {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .actions {
-            margin-top: 10px;
-        }
-
-        .btn {
-            text-decoration: none;
-            color: white;
-            padding: 6px 10px;
-            border-radius: 4px;
-            margin: 0 3px;
-            font-size: 13px;
-        }
-
-        .edit-btn { background: #00897b; }
-        .delete-btn { background: #d32f2f; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
-<body>
-
+<body data-create-post-url="{% url 'create_post' %}" data-logout-url="{% url 'logout' %}">
+    
     <h1>Recent Posts</h1>
-    <a href="{% url 'create_post' %}" class="add-btn">+ create post</a>
 
     <div class="post-grid">
         {% for post in posts %}
-            <div class="post-card">
-                <a href="{% url 'post_detail' post.pk %}" class="post-link">
-                    {% if post.content %}
-                        <img src="{{ post.content.url }}" alt="{{ post.title }}">
-                    {% endif %}
-                    <div class="post-content">
-                        <h3>{{ post.title }}</h3>
-                        <p class="post-meta">{{ post.created_at|date:"F d, Y" }}</p>
-                        <p style="font-size:14px; color:#555;">{{ post.author.username }}</p>
-                    </div>
-                </a>
-
-                {% if user == post.author %}
-                    <div class="actions">
-                        <a href="{% url 'update_post' post.pk %}" class="btn edit-btn">edit</a>
-                        <a href="{% url 'delete_post' post.pk %}" class="btn delete-btn">delete</a>
+        <div class="post-card">
+            <a href="{% url 'post_detail' post.pk %}" class="post-link">
+                {% if post.content %} 
+                    <img src="{{ post.content.url }}" alt="{{ post.title }}" class="post-image">
+                {% else %}
+                    <div class="no-image">
+                        {{ post.title }}
                     </div>
                 {% endif %}
+                <div class="post-content">
+                    <div class="post-title">{{ post.title }}</div>
+                    <div class="post-meta">{{ post.created_at|date:"F d, Y" }}</div>
+                    <div class="post-author">{{ post.author.username }}</div>
+                </div>
+            </a>
+            
+            {% if user == post.author %}
+            <div class="actions">
+                <a href="{% url 'update_post' post.pk %}" class="edit-btn">
+                    <span>✏️</span>
+                    Edit
+                </a>
+                <a href="{% url 'delete_post' post.pk %}" class="delete-btn">
+                    <span>🗑️</span>
+                    Delete
+                </a>
             </div>
+            {% endif %}
+            
+            <div class="post-text">{{ post.text }}</div>
+        </div>
         {% empty %}
-        <p> There are no posts yet. </p>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <p>There are no posts yet.</p>
+        </div>
         {% endfor %}
     </div>
+   
+    <script src="{% static 'js/header-buttons.js' %}"></script>
 
 </body>
 </html>

@@ -1,155 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="fa">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ post.title }}</title>
-    <style>
-        body {
-            background: #f4f5fc;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 30px;
-            direction: rtl;
-            line-height: 1.7;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            padding: 40px;
-            transition: all 0.3s ease;
-        }
-
-        h1 {
-            color: #222;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .meta {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 25px;
-        }
-
-        img {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            margin: 25px 0;
-            object-fit: cover;
-        }
-
-        .content {
-            color: #333;
-            margin-bottom: 40px;
-            font-size: 16px;
-            line-height: 1.8;
-            text-align: justify;
-        }
-
-        hr {
-            border: 0;
-            height: 1px;
-            background: #e3e3e3;
-            margin: 30px 0;
-        }
-
-        .comment-section h2 {
-            font-size: 20px;
-            color: #3236b4;
-            margin-bottom: 15px;
-        }
-
-        .comment {
-            background: #f8f8ff;
-            border: 1px solid #e3e3e3;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: box-shadow 0.2s ease;
-        }
-
-        .comment:hover {
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .comment-author {
-            color: #3236b4;
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        .comment-time {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 6px;
-        }
-
-        .comment-content {
-            font-size: 14px;
-            color: #444;
-        }
-
-        form {
-            margin-top: 25px;
-        }
-
-        textarea, input {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 14px;
-            resize: vertical;
-        }
-
-        button {
-            background-color: #3236b4;
-            color: white;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 12px;
-            font-size: 15px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #25288e;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 30px;
-            color: #3236b4;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 22px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body>
-
     <div class="container">
+             <div class="container">
         <h1>{{ post.title }}</h1>
-        <p class="meta">توسط {{ post.author.username }} | {{ post.created_at|date:"Y-m-d H:i" }}</p>
+        <p class="meta">BY: {{ post.author.username }} </p>
+            <p> {{ post.created_at|date:"Y-m-d H:i" }}</p>
 
         {% if post.content %}
             <img src="{{ post.content.url }}" alt="{{ post.title }}">
@@ -158,31 +20,32 @@
         <hr>
 
         <div class="comment-section">
-            <h2>نظرات کاربران</h2>
-
+           <p> <h1>User Comments</h1></p>
             {% for comment in comments %}
                 <div class="comment">
                     <div class="comment-author">{{ comment.user.username }}</div>
-                    <div class="comment-time">{{ comment.created_at|date:"Y-m-d H:i" }}</div>
                     <div class="comment-content">{{ comment.text }}</div>
+                    <div class="comment-time">{{ comment.created_at|date:"Y-m-d H:i" }}</div>
                 </div>
             {% empty %}
-                <p>هیچ نظری ثبت نشده است.</p>
+                <p>No comments have been posted.</p>
             {% endfor %}
 
             {% if user.is_authenticated %}
                 <form method="post">
                     {% csrf_token %}
                     {{ form.text }}
-                    <button type="submit">ارسال نظر</button>
+                    <button type="submit">Submit comment</button>
                 </form>
             {% else %}
-                <p>برای ارسال نظر، لطفاً <a href="{% url 'login' %}">وارد شوید</a>.</p>
+            <p>To post a comment, please <a href="{% url 'login' %}">log in</a>.</p>
             {% endif %}
         </div>
 
-        <a href="{% url 'post_list' %}" class="back-link">← بازگشت به لیست پست‌ها</a>
+        <a href="{% url 'post_list' %}" class="back-link">← Return to post list</a>
+    </div>    
+        
+        <script src="{% static 'js/post-detail.js' %}"></script>
     </div>
-
 </body>
 </html>
