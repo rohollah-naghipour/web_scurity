@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from blog.forms import UserRegisterForm,UserLoginForm,PostForm,CommentForm
+from blog.forms import UserRegisterForm,UserLoginForm,PostForm,CommentForm,UserProfileForm
 
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -141,4 +141,17 @@ def delete_post_view(request, pk):
 
 
 
-
+@login_required
+def edit_profile(request):
+    """View for editing user profile"""
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('edit_profile')
+    else:
+        form = UserProfileForm(instance=request.user)
+    
+    return render(request, 'edit_profile.html', {'form': form})
