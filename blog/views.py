@@ -11,6 +11,19 @@ from blog.forms import UserRegisterForm,UserLoginForm,PostForm,CommentForm
 
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.db.models import Count
+
+
+
+def homepage(request):
+    context = {
+        'total_posts': Post.objects.count(),
+        'total_users': User.objects.count(),
+        'total_comments': Post.objects.aggregate(total_comments=Count('comments'))['total_comments'] or 0,
+        'recent_posts': Post.objects.all().order_by('-created_at')[:6]
+    }
+    return render(request, 'index.html', context)
+
 
 @ensure_csrf_cookie
 @login_required
