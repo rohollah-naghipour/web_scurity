@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - My Blog</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/black.png' %}">
     <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
 </head>
 <body class="edit-profile-page">
@@ -12,6 +13,7 @@
         <!-- Header -->
         <div class="profile-header">
             <div class="back-button">
+                <a href="{% url 'user_profile' %}" class="back-link">
                     <span class="back-arrow">←</span>
                     Back to Profile
                 </a>
@@ -122,6 +124,7 @@
                         <span class="btn-icon">💾</span>
                         Save Changes
                     </button>
+                    <a href="{% url 'user_profile' %}" class="btn btn-secondary">
                         <span class="btn-icon">↶</span>
                         Cancel
                     </a>

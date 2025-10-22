@@ -155,3 +155,16 @@ def edit_profile(request):
         form = UserProfileForm(instance=request.user)
     
     return render(request, 'edit_profile.html', {'form': form})
+
+
+@login_required
+def user_profile(request):
+    user = request.user
+    user_posts = user.post_set.all().order_by('-created_at')[:5]  
+    
+    context = {
+        'user': user,
+        'recent_posts': user_posts,
+        'posts_count': user.post_set.count(),
+    }
+    return render(request, 'user_profile.html', context)
