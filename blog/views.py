@@ -1,20 +1,18 @@
 
-from django.shortcuts import render, get_object_or_404
-from .models import Post
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
-from blog.forms import UserRegisterForm,UserLoginForm,PostForm,CommentForm,UserProfileForm
-
-from django.middleware.csrf import get_token
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db.models import Count
 
+from blog.forms import *
+from blog.models import Post
 
-
+#from django.middleware.csrf import get_token
+#from django.views.decorators.csrf import ensure_csrf_cookie
+    
 def homepage(request):
     context = {
         'total_posts': Post.objects.count(),
@@ -25,13 +23,12 @@ def homepage(request):
     return render(request, 'index.html', context)
 
 
-@ensure_csrf_cookie
 @login_required
 def post_list(request):
     posts = Post.objects.all()
-    print("request.user = ", request.user)
-    token = get_token(request)
-    print('token = ', token)
+    #print("request.user = ", request.user)
+    #token = get_token(request)
+    #print('token = ', token)
     return render(request, 'post_list.html',{'posts': posts})
 
 
@@ -76,8 +73,8 @@ def login_view(request):
         form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            print("user = ", user)
-            print("request.user = ", request.user)
+            #print("user = ", user)
+            #print("request.user = ", request.user)
             login(request, user)
             return redirect('post_list')
         else:
@@ -93,8 +90,8 @@ def logout_view(request):
 @login_required
 def create_post_view(request):
     if request.method == 'POST':
-        print("request.POST = ", request.POST)
-        print("request.FILES = ", request.FILES)
+        #print("request.POST = ", request.POST)
+        #print("request.FILES = ", request.FILES)
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
@@ -110,7 +107,7 @@ def create_post_view(request):
 @login_required
 def update_post_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    print("post = ", post)
+    #print("post = ", post)
     if post.author != request.user:
         messages.error(request, 'You do not have permission to edit this post.')
         return redirect('post_list')
@@ -129,7 +126,7 @@ def update_post_view(request, pk):
 @login_required
 def delete_post_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    print("post = ", post)
+    #print("post = ", post)
     if post.author != request.user:
         return redirect('post_list')
 
@@ -143,8 +140,6 @@ def delete_post_view(request, pk):
 
 @login_required
 def edit_profile(request):
-    """View for editing user profile"""
-    
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():

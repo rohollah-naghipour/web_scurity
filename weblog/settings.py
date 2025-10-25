@@ -1,16 +1,47 @@
 
-from pathlib import Path
 
+from pathlib import Path
+import environ
+import os
+
+env = environ.Env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-1dhsl-sdhoybs-@u_r(+*fq4@@hobd8466x)sedk=m0meujgl0'
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
-DEBUG = True
+SECRET_KEY = env('SECRET_KEY', default='a-default-key-for-development-only')
 
-ALLOWED_HOSTS = []
+
+DEBUG = env.bool('DEBUG', default=True)
+
+
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
+
+#@@@@@@@@@@@@ For the development prodotion @@@@@@@@@@@@@@@@@
+DATABASES = {
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+         'NAME': env('DB_NAME', default='blogDB'),
+        'USER': env('DB_USER', default='root'),
+         'PASSWORD': env('DB_PASSWORD', default='2001R1380'),
+         'HOST': env('DB_HOST', default='db'),
+         'PORT': env('DB_PORT', default='5432'),
+     }
+ }
+
+#@@@@@@@@@@@@ For the development environment @@@@@@@@@@@@@@@@@
+#DATABASES = {
+    #'default': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+    #}
+#
+
+# point ==> for development the code. 
+#Delete the staticfiles folder and run python manage.py collectstatic again 
 
 
 INSTALLED_APPS = [
@@ -54,14 +85,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'weblog.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -91,7 +114,6 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import os
     
 STATIC_URL = '/static/'
 

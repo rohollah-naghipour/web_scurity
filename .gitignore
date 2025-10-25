@@ -139,3 +139,19 @@ GitHub.sublime-settings
 
 # VSCODE
  .vscode/
+
+
+ # Environment variables
+.env
+*.env
+
+# Database
+*.sqlite3
+*.db
+
+# PyCharm
+.idea/
+
+# Virtual environment
+venv/
+env/

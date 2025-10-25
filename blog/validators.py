@@ -1,4 +1,3 @@
-
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 
@@ -12,7 +11,7 @@ class PostValidator:
         
         self.image_magic_numbers = {
             b'\xff\xd8\xff': 'JPEG',
-            b'\x89PNG\r\n\x1a\n': 'PNG', 
+            b'\x89PNG': 'PNG',  
             b'GIF8': 'GIF',
             b'RIFF': 'WEBP'
         }
@@ -33,13 +32,10 @@ class PostValidator:
     
     def validate_image(self, image):
         self._validate_file_extension(image)
-
-        self._validate_magic_numbers(image)
+        self._validate_magic_numbers(image)  
     
     def validate_title(self, title):
         self._validate_title_length(title)
-        
-        
         self._validate_title_pattern(title)
     
     def _validate_file_extension(self, image):
@@ -49,41 +45,37 @@ class PostValidator:
                 f'Invalid file format. Allowed formats: {", ".join(self.allowed_extensions)}'
             )
     
-    def _validate_magic_numbers(self, image):
-        if hasattr(image, 'seekable') and image.seekable():
-            current_pos = image.tell()
-            image.seek(0)
-     
-        file_header = image.read(20)
-        
-     
-        valid_file = False
-        for magic_bytes, file_type in self.image_magic_numbers.items():
-            if file_header.startswith(magic_bytes):
-                valid_file = True
-                break
-        
-     
-        if hasattr(image, 'seekable') and image.seekable():
-            image.seek(current_pos)
-        
-        if not valid_file:
-            raise ValidationError('Invalid image file type')
+    def _validate_magic_numbers(self, image):  
+        try:
+            current_pos = image.tell() if hasattr(image, 'tell') else 0
+            
+            if hasattr(image, 'seek'):
+                image.seek(0)
+            
+            file_header = image.read(20)
+            
+            if hasattr(image, 'seek'):
+                image.seek(current_pos)
+            
+            valid_file = False
+            for magic_bytes, file_type in self.image_magic_numbers.items():
+                if file_header.startswith(magic_bytes):
+                    valid_file = True
+                    break
+            
+            if not valid_file:
+                raise ValidationError('Invalid image file type')
+                
+        except Exception as e:
+            raise ValidationError(f'Error validating image: {str(e)}')
     
     def _validate_title_length(self, title):
-        """
-        Validate title length (maximum 15 characters)
-        """
         if len(title.strip()) > 15:
             raise ValidationError('Title cannot be longer than 15 characters')
-        
         if len(title.strip()) == 0:
             raise ValidationError('Title cannot be empty')
     
     def _validate_title_pattern(self, title):
-        """
-        Validate title pattern using regex
-        """
         if not re.match(self.title_regex, title.strip()):
             raise ValidationError(
                 'Title can only contain English/Persian letters, numbers, spaces, and - . , ( ) characters'

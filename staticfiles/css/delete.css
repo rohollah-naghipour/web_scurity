@@ -1,0 +1,358 @@
+/* delete.css - Styles for delete post confirmation page */
+:root {
+    --black: #121212;
+    --dark-gray: #1a1a1a;
+    --medium-gray: #2d2d2d;
+    --light-gray: #404040;
+    --text-light: #e0e0e0;
+    --text-lighter: #ffffff;
+    --text-muted: #888;
+    --accent: #555;
+    --accent-hover: #666;
+    --danger: #dc3545;
+    --danger-hover: #c82333;
+    --success: #28a745;
+}
+
+/* Base Styles */
+.delete-page {
+    background-color: var(--black);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    direction: rtl;
+}
+
+/* Main Container */
+.delete-container {
+    background: var(--dark-gray);
+    border: 1px solid var(--light-gray);
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    animation: containerAppear 0.6s ease-out;
+}
+
+/* Warning Header Strip */
+.delete-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--danger), #ff6b6b, var(--danger));
+    animation: warningPulse 2s infinite;
+}
+
+/* Warning Icon */
+.warning-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 20px;
+    animation: iconPulse 2s infinite;
+    filter: drop-shadow(0 0 10px rgba(220, 53, 69, 0.3));
+}
+
+/* Title */
+.delete-title {
+    color: var(--text-lighter);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+    border-bottom: 2px solid var(--danger);
+    padding-bottom: 15px;
+    animation: titleSlide 0.8s ease-out;
+}
+
+/* Post Info */
+.post-info {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    animation: contentFade 1s ease-out;
+}
+
+.post-title {
+    color: var(--text-lighter);
+    font-weight: 600;
+    background: var(--medium-gray);
+    padding: 10px 15px;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+    margin: 15px 0;
+}
+
+/* Post Image */
+.post-image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid var(--light-gray);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: imageZoom 0.8s ease-out;
+}
+
+/* Buttons Container */
+.delete-buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: buttonsAppear 1s ease-out;
+}
+
+/* Delete Button (Yes) */
+.btn-delete {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-delete:hover {
+    background: var(--danger-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+.btn-delete:active {
+    transform: translateY(0);
+}
+
+.btn-delete::before {
+    content: '🗑️';
+    margin-left: 8px;
+}
+
+/* Cancel Button (No) */
+.btn-cancel {
+    display: inline-block;
+    background: var(--medium-gray);
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--light-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-cancel:hover {
+    background: var(--accent);
+    color: var(--text-lighter);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent);
+}
+
+.btn-cancel:active {
+    transform: translateY(0);
+}
+
+.btn-cancel::before {
+    content: '↶';
+    margin-left: 8px;
+}
+
+/* Animations */
+@keyframes containerAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes warningPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(220, 53, 69, 0.3));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 15px rgba(220, 53, 69, 0.5));
+    }
+}
+
+@keyframes titleSlide {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes contentFade {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes imageZoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes buttonsAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .delete-page {
+        padding: 15px;
+    }
+    
+    .delete-container {
+        padding: 30px 25px;
+    }
+    
+    .delete-title {
+        font-size: 1.5rem;
+    }
+    
+    .warning-icon {
+        font-size: 3rem;
+    }
+    
+    .btn-delete,
+    .btn-cancel {
+        padding: 10px 25px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .delete-page {
+        padding: 10px;
+    }
+    
+    .delete-container {
+        padding: 25px 20px;
+    }
+    
+    .delete-title {
+        font-size: 1.3rem;
+    }
+    
+    .warning-icon {
+        font-size: 2.5rem;
+    }
+    
+    .delete-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-delete,
+    .btn-cancel {
+        width: 100%;
+        padding: 12px;
+        margin: 0;
+    }
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+    .delete-container {
+        background: var(--dark-gray);
+        border-color: var(--light-gray);
+    }
+    
+    .post-title {
+        background: var(--medium-gray);
+    }
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+    .delete-container {
+        border-width: 2px;
+    }
+    
+    .delete-container::before {
+        height: 6px;
+    }
+    
+    .btn-delete,
+    .btn-cancel {
+        border-width: 2px;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .delete-container,
+    .warning-icon,
+    .delete-title,
+    .post-info,
+    .post-image-preview,
+    .delete-buttons {
+        animation: none;
+    }
+    
+    .btn-delete,
+    .btn-cancel {
+        transition: none;
+    }
+}
