@@ -20,17 +20,17 @@ DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
-#@@@@@@@@@@@@ For the development prodotion @@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@ For the development prodotion @@@@@@@@@@@@@@@@@ 
 DATABASES = {
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': env('DB_NAME', default='blogDB'),
-        'USER': env('DB_USER', default='root'),
-         'PASSWORD': env('DB_PASSWORD', default='2001R1380'),
-         'HOST': env('DB_HOST', default='db'),
-         'PORT': env('DB_PORT', default='5432'),
-     }
- }
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+    }
+}
 
 #@@@@@@@@@@@@ For the development environment @@@@@@@@@@@@@@@@@
 #DATABASES = {

@@ -155,3 +155,6 @@ GitHub.sublime-settings
 # Virtual environment
 venv/
 env/
+
+#log commit
+curity
