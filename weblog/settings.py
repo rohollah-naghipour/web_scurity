@@ -20,7 +20,7 @@ DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
-#@@@@@@@@@@@@ For the development prodotion @@@@@@@@@@@@@@@@@@ 
+#@@@@@@@@@@@@ For the development prodotion @@@@@@@@@@@@@@@@@ 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -31,7 +31,6 @@ DATABASES = {
         'PORT': env('DB_PORT'),
     }
 }
-
 
 #@@@@@@@@@@@@ For the development environment @@@@@@@@@@@@@@@@@
 #DATABASES = {
