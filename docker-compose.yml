@@ -12,10 +12,6 @@ services:
       - app-network
     env_file:
       - .env
-      
-    environment:
-      - DATABASE_URL=postgresql://root:2001R1380@db:5432/blogDB
-      - DEBUG=1
     depends_on:
       - db
 
@@ -33,4 +29,4 @@ volumes:
   postgres_data:  
 networks:
   app-network:
-    driver: bridge
+    driver: bridge  
